@@ -12,15 +12,24 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	cucumberRuntime {
+		extendsFrom testImplementation
+	}
 }
 
 repositories {
 	mavenCentral()
+	mavenLocal()
 }
 
 ext {
 	set('springCloudVersion', "2021.0.0")
 }
+
+ext {
+	mapstructVersion = "1.5.0.Beta2"
+}
+
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
@@ -36,6 +45,21 @@ dependencies {
 
 	implementation 'org.springframework.cloud:spring-cloud-config-server'
 	
+	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+ 
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+	
+	implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	
+	testImplementation 'io.cucumber:cucumber-java:6.10.4'
+    testImplementation 'io.cucumber:cucumber-junit:6.8.1'
+    
+    testImplementation 'io.rest-assured:rest-assured:4.5.1'
+	testImplementation 'io.rest-assured:rest-assured-all:4.5.1'
+    
+	implementation 'junit:junit:4.13.1'
 }
 
 dependencyManagement {
@@ -46,4 +70,14 @@ dependencyManagement {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+sourceSets{
+main{
+     java{
+         srcDirs += 'build/generated/sources/annotationProcessor/java/main'
+}}}
+
+test {
+    useTestNG()
 }

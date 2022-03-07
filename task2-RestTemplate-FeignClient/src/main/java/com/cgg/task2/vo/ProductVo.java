@@ -1,29 +1,37 @@
-package com.cgg.task2.VO;
+package com.cgg.task2.vo;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 
 import lombok.Data;
 
 @Data
 @Entity
-public class ProductDto {
+public class ProductVo {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
+	@Pattern(regexp = "^[A-Za-z]+$", message = "Product name should be in alphabates only.")
 	private String name;
 	private String description;
+    @Min(1)
 	private int quantity;
+    @Min(100)
 	private long price;
-	private String company;
-	
-	public ProductDto() {
-		
-	}
+    
+    private String company;
+    
+    public ProductVo() {
+    	
+    }
 
-	public ProductDto(int id, String name, String description, int quantity, long price, String company) {
+	public ProductVo(int id,
+			@Pattern(regexp = "^[A-Za-z]+$", message = "Product name should be in alphabates only.") String name,
+			String description, @Min(1) int quantity, @Min(100) long price, String company) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -80,7 +88,6 @@ public class ProductDto {
 	public void setCompany(String company) {
 		this.company = company;
 	}
-	
-	
 
+    
 }
